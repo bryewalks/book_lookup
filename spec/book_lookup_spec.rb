@@ -22,10 +22,9 @@ describe BookLookup do
   describe '#display_books' do
 
     let(:book) { Book.new(title: "title", publisher: "publisher", author: "author") }
+    let(:book_array) { [book] }
 
     it 'should display each book given' do
-      book_array = []
-      book_array << book
       expect { booklookup.display_books(book_array) }.to output("        Book #1        \nTitle: #{book.title}\nAuthor(s): #{book.author}\nPublisher: #{book.publisher}\n\n").to_stdout
     end
   end
@@ -117,6 +116,68 @@ describe BookLookup do
         expect(booklookup.search_again?).to eq(true)
       end
     end
+  end
 
+  describe '#search_path' do
+    before do
+      allow(booklookup).to receive(:puts).and_return('')
+    end
+
+    it 'should call search_books with 1 argument' do
+      allow(booklookup).to receive(:user_input).and_return('1985')
+      expect(booklookup).to receive(:search_books).with('1985')
+      booklookup.search_path
+    end
+  end
+
+  describe '#select_book' do
+    before do
+      allow(booklookup).to receive(:puts).and_return('')
+    end
+
+    it 'should call add_book with 1 argument' do
+      allow(booklookup).to receive(:user_input).and_return('1')
+      expect(booklookup).to receive(:add_book).with(1)
+      booklookup.select_book
+    end
+  end
+
+  describe '#add_book' do
+    let(:book_1) { Book.new(title: "title_1", publisher: "publisher_1", author: "author_1") }
+    let(:book_2) { Book.new(title: "title_2", publisher: "publisher_2", author: "author_2") }
+    let(:book_3) { Book.new(title: "title_3", publisher: "publisher_3", author: "author_3") }
+    let(:book_4) { Book.new(title: "title_4", publisher: "publisher_4", author: "author_4") }
+    let(:book_5) { Book.new(title: "title_5", publisher: "publisher_5", author: "author_5") }
+
+    before do 
+      booklookup.found_books = [book_1, book_2, book_3, book_4, book_5]
+    end
+
+    context 'when adding one' do
+      it 'should move books from found_books to reading_list' do
+        booklookup.add_book(1)
+        expect(booklookup.reading_list.length).to eq(1)
+      end
+
+      it 'should move the correct book' do
+        booklookup.add_book(5)
+        expect(booklookup.reading_list.first).to eq(book_5)
+      end
+    end
+    context 'when adding multiple' do
+      it 'should add more than one book' do
+        booklookup.add_book(1)
+        booklookup.add_book(2)
+        expect(booklookup.reading_list.length).to eq(2)
+      end
+
+      it 'should not overide other books' do
+        booklookup.add_book(1)
+        booklookup.add_book(2)
+        booklookup.add_book(3)
+        booklookup.add_book(4)
+        expect(booklookup.reading_list.first).to eq(book_1)
+      end
+    end
   end
 end
