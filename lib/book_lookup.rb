@@ -2,24 +2,56 @@ require 'http'
 require_relative 'book'
 
 class BookLookup
+  attr_accessor :reading_list, :found_books
+
+  def initialize
+    @reading_list = []
+  end
 
   def run_program
-    system("clear")
     option = nil
     until option == 3
+      system("clear")
       display_options
-      option = user_input
+      option = user_input.to_i
       case option
-      when '1'
-        puts 'search_path'
-      when '2'
+      when 1
+        search_path
+      when 2
         puts 'reading_list_path'
-      when '3'
+      when 3
         puts 'good bye'
       else
         puts 'not valid option'
       end
     end
+  end
+
+  def search_path
+    searching = true
+    while searching
+      puts "enter book title to search for books"
+      title = user_input
+      search_books(title)
+      select_book if add_to_saved?
+      searching = search_again?
+    end
+  end
+
+  def select_book
+    selecting = true
+    while selecting
+      puts "Enter book # to add to reading list"
+      until (book_number = user_input.to_i).between?(1, 5)
+        puts "Please enter valid book number."
+      end
+      add_book(book_number)
+      selecting = add_another?
+    end
+  end
+
+  def add_book(number)
+    @reading_list << @found_books[number - 1]
   end
 
   def user_input
@@ -41,6 +73,11 @@ class BookLookup
     continue?
   end
 
+  def add_another?
+    puts "Add another? y/n"
+    continue?
+  end
+
   def display_options
     puts "1. Search Books"
     puts "2. Reading List"
@@ -54,14 +91,14 @@ class BookLookup
     results = JSON.parse(response.body)
     searched_books = results["items"]
     if searched_books
-      books_array = []
+      @found_books = []
       searched_books.each do |book|
         new_title = book["volumeInfo"]["title"]
         new_authors = book["volumeInfo"]["authors"]
         new_publisher = book["volumeInfo"]["publisher"]
-        books_array << Book.new(title: new_title, author: new_authors, publisher: new_publisher)
+        @found_books << Book.new(title: new_title, author: new_authors, publisher: new_publisher)
       end
-      display_books(books_array)
+      display_books(@found_books)
     else
       puts "no matches..."
     end
