@@ -33,11 +33,18 @@ describe Book do
     end
 
     context 'when publisher given' do
-
+      it 'should use given publisher' do
+        publisher = 'Random House'
+        book = Book.new(publisher: publisher)
+        expect(book.publisher).to eq('Random House')
+      end
     end
 
     context 'when no publisher given' do
-    
+      it 'should be unknown' do
+        book = Book.new(publisher: nil)
+        expect(book.publisher).to eq('Unknown')
+      end
     end
     
   end
