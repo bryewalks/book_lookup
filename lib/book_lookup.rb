@@ -2,6 +2,51 @@ require 'http'
 require_relative 'book'
 
 class BookLookup
+
+  def run_program
+    system("clear")
+    option = nil
+    until option == 3
+      display_options
+      option = user_input
+      case option
+      when '1'
+        puts 'search_path'
+      when '2'
+        puts 'reading_list_path'
+      when '3'
+        puts 'good bye'
+      else
+        puts 'not valid option'
+      end
+    end
+  end
+
+  def user_input
+    gets.chomp
+  end
+
+  def continue?
+    response = user_input.downcase
+    response == 'y'
+  end
+
+  def add_to_saved?
+    puts "Would you like to add selections to reading list? y/n"
+    continue?
+  end
+
+  def search_again?
+    puts "Search again? y/n"
+    continue?
+  end
+
+  def display_options
+    puts "1. Search Books"
+    puts "2. Reading List"
+    puts "3. Exit"
+  end
+
   def search_books(title)
     #format title to work with googles api regex to replace one or more spaces with underscore
     title = title.gsub(/ +/, '_')
