@@ -118,6 +118,74 @@ describe BookLookup do
     end
   end
 
+  describe '#add_another?' do
+    context "user enters 'n'" do
+      before do
+        allow(booklookup).to receive(:user_input).and_return('n')
+        allow(booklookup).to receive(:puts).and_return('')
+      end
+
+      it 'should call continue?' do
+        expect(booklookup).to receive(:continue?)
+        booklookup.add_another?
+      end
+      
+      it 'should return false' do
+        expect(booklookup.add_another?).to eq(false)
+      end
+    end
+    
+    context "user enters 'y'" do
+      before do 
+        allow(booklookup).to receive(:user_input).and_return('y')
+      end
+
+      it 'should ask use if they want to add another' do
+        expect { booklookup.add_another? }.to output("Add another? y/n\n").to_stdout
+      end
+
+      it 'should return true' do
+        allow(booklookup).to receive(:puts).and_return('')
+        expect(booklookup.add_another?).to eq(true)
+      end
+    end
+  end
+
+  describe '#run_program' do
+    context 'when option 1' do
+      it 'should call search_path' do
+        allow(booklookup).to receive(:user_input).and_return('1', '3')
+        expect(booklookup).to receive(:search_path)
+        booklookup.run_program
+      end
+    end  
+
+    context 'when option 2' do
+      it 'should call reading_list_path' do
+        allow(booklookup).to receive(:user_input).and_return('2', '3')
+        expect(booklookup).to receive(:reading_list_path)
+        booklookup.run_program
+      end
+    end
+
+    context 'when option 3' do
+      it 'should say good-bye' do
+        allow(booklookup).to receive(:user_input).and_return('3')
+        allow(booklookup).to receive(:display_options).and_return('')
+        expect { booklookup.run_program }.to output("Good-bye\n").to_stdout
+      end
+    end
+
+    context 'when other option' do
+      it 'should say not a valid option' do
+        allow(booklookup).to receive(:user_input).and_return('10', '3')
+        allow(booklookup).to receive(:display_options).and_return('')
+        allow(booklookup).to receive(:sleep).and_return('')
+        expect { booklookup.run_program }.to output("Not a valid option\nGood-bye\n").to_stdout
+      end
+    end
+  end
+
   describe '#search_path' do
     before do
       allow(booklookup).to receive(:puts).and_return('')
@@ -177,6 +245,33 @@ describe BookLookup do
         booklookup.add_book(3)
         booklookup.add_book(4)
         expect(booklookup.reading_list.first).to eq(book_1)
+      end
+    end
+  end
+
+  describe '#reading_list_path' do
+
+    let(:book_1) { Book.new(title: "title_1", publisher: "publisher_1", author: "author_1") }
+
+    before do 
+      allow(booklookup).to receive(:gets).and_return('')
+    end
+
+    context 'when no books in reading list' do
+      it 'should inform you no books in reading list' do
+        expect { booklookup.reading_list_path }.to output("You have no books in your reading list!\nPress enter to return\n").to_stdout
+      end
+    end
+
+    context 'when books in reading list' do
+      before do
+        booklookup.reading_list = [book_1]
+      end
+
+      it 'should display the books' do
+        allow(booklookup).to receive(:puts).and_return('')
+        expect(booklookup).to receive(:display_books).with(booklookup.reading_list)
+        booklookup.reading_list_path
       end
     end
   end
