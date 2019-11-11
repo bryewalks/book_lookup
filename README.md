@@ -17,11 +17,16 @@ This code has been run and tested on Ruby 2.5.3.
 * [http] (https://github.com/httprb/http) - a fast Ruby HTTP client with a chainable API, streaming support, and timeouts
 
 ### Installation & Run
+   If using bundler
    ```
    $ bundle install
    ```
    ```
    $ ruby run.rb
+   ```
+   Otherwise
+   ```
+   $ gem install http
    ```
 
 ### Tests
