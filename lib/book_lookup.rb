@@ -18,22 +18,36 @@ class BookLookup
       when 1
         search_path
       when 2
-        puts 'reading_list_path'
+        reading_list_path
       when 3
-        puts 'good bye'
+        puts 'Good-bye'
       else
-        puts 'not valid option'
+        puts 'Not a valid option'
+        sleep(0.5)
       end
     end
+  end
+
+  def reading_list_path
+    if @reading_list.any?
+      display_books(@reading_list)
+    else
+      puts "You have no books in your reading list!"
+    end
+    puts 'Press enter to return'
+    gets
   end
 
   def search_path
     searching = true
     while searching
+      system("clear")
       puts "enter book title to search for books"
       title = user_input
       search_books(title)
-      select_book if add_to_saved?
+      if @found_books && add_to_saved?
+        select_book
+      end
       searching = search_again?
     end
   end
