@@ -16,10 +16,30 @@ This code has been run and tested on Ruby 2.5.3.
 
 * [http] (https://github.com/httprb/http) - a fast Ruby HTTP client with a chainable API, streaming support, and timeouts
 
-### Installation 
-
-   bundle install
+### Installation & Run
+   ```
+   $ bundle install
+   ```
+   ```
+   $ ruby run.rb
    ```
 
-   ruby run.rb
-   ```
+### Tests
+
+Testing was done using rspec.
+
+* [RSpec] (https://github.com/rspec/rspec) - Behaviour Driven Development for Ruby
+
+  ```
+  $ gem install rspec
+  ```
+
+  to run test
+
+  ```
+  $ rspec
+  ```
+  from root directory
+
+
+
