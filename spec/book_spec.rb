@@ -20,15 +20,15 @@ describe Book do
     context 'when author given' do
       it 'should use given author' do
         author = 'Hunter S Thompson'
-        book = Book.new(author: author)
-        expect(book.author).to eq(author)
+        book = Book.new(authors: author)
+        expect(book.authors).to eq(author)
       end
     end
 
     context 'when no author given' do
       it 'should be unknown' do
-        book = Book.new(author: nil)
-        expect(book.author).to eq('Unknown')
+        book = Book.new(authors: nil)
+        expect(book.authors).to eq(['Unknown'])
       end
     end
 
@@ -46,6 +46,28 @@ describe Book do
         expect(book.publisher).to eq('Unknown')
       end
     end
-    
+  end
+
+  describe '#format_authors' do
+    context 'when author is unknown' do
+      it 'should return unknown' do
+        book = Book.new(authors: nil)
+        expect(book.format_authors).to eq('Unknown')
+      end
+    end
+
+    context 'when one author' do
+      it 'should return that author' do
+        book = Book.new(authors: ['brye'])
+        expect(book.format_authors).to eq('brye')
+      end
+    end
+
+    context 'when multiple authors' do
+      it 'should return authors seperated with ,' do
+        book = Book.new(authors: ['brye', 'walker'])
+        expect(book.format_authors).to eq('brye, walker')
+      end
+    end
   end
 end
