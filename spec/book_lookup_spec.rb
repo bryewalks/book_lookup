@@ -21,11 +21,11 @@ describe BookLookup do
 
   describe '#display_books' do
 
-    let(:book) { Book.new(title: "title", publisher: "publisher", author: "author") }
+    let(:book) { Book.new(title: "title", publisher: "publisher", authors: ["author"]) }
     let(:book_array) { [book] }
 
     it 'should display each book given' do
-      expect { booklookup.display_books(book_array) }.to output("        Book #1        \nTitle: #{book.title}\nAuthor(s): #{book.author}\nPublisher: #{book.publisher}\n\n").to_stdout
+      expect { booklookup.display_books(book_array) }.to output("        Book #1        \nTitle: #{book.title}\nAuthor(s): #{book.format_authors}\nPublisher: #{book.publisher}\n\n").to_stdout
     end
   end
 
@@ -211,11 +211,11 @@ describe BookLookup do
   end
 
   describe '#add_book' do
-    let(:book_1) { Book.new(title: "title_1", publisher: "publisher_1", author: "author_1") }
-    let(:book_2) { Book.new(title: "title_2", publisher: "publisher_2", author: "author_2") }
-    let(:book_3) { Book.new(title: "title_3", publisher: "publisher_3", author: "author_3") }
-    let(:book_4) { Book.new(title: "title_4", publisher: "publisher_4", author: "author_4") }
-    let(:book_5) { Book.new(title: "title_5", publisher: "publisher_5", author: "author_5") }
+    let(:book_1) { Book.new(title: "title_1", publisher: "publisher_1", authors: "author_1") }
+    let(:book_2) { Book.new(title: "title_2", publisher: "publisher_2", authors: "author_2") }
+    let(:book_3) { Book.new(title: "title_3", publisher: "publisher_3", authors: "author_3") }
+    let(:book_4) { Book.new(title: "title_4", publisher: "publisher_4", authors: "author_4") }
+    let(:book_5) { Book.new(title: "title_5", publisher: "publisher_5", authors: "author_5") }
 
     before do 
       booklookup.found_books = [book_1, book_2, book_3, book_4, book_5]
@@ -251,7 +251,7 @@ describe BookLookup do
 
   describe '#reading_list_path' do
 
-    let(:book_1) { Book.new(title: "title_1", publisher: "publisher_1", author: "author_1") }
+    let(:book_1) { Book.new(title: "title_1", publisher: "publisher_1", authors: "author_1") }
 
     before do 
       allow(booklookup).to receive(:gets).and_return('')

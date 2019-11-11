@@ -110,7 +110,7 @@ class BookLookup
         new_title = book["volumeInfo"]["title"]
         new_authors = book["volumeInfo"]["authors"]
         new_publisher = book["volumeInfo"]["publisher"]
-        @found_books << Book.new(title: new_title, author: new_authors, publisher: new_publisher)
+        @found_books << Book.new(title: new_title, authors: new_authors, publisher: new_publisher)
       end
       display_books(@found_books)
     else
@@ -122,7 +122,7 @@ class BookLookup
     books.each_with_index do |book, index|
       puts "        Book ##{index + 1}        "
       puts "Title: #{book.title}"
-      puts "Author(s): #{book.author}"
+      puts "Author(s): #{book.format_authors}"
       puts "Publisher: #{book.publisher}"
       puts
     end
