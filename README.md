@@ -21,13 +21,16 @@ This code has been run and tested on Ruby 2.5.3.
    ```
    $ bundle install
    ```
-   ```
-   $ ruby run.rb
-   ```
-   Otherwise
+   otherwise
    ```
    $ gem install http
    ```
+
+   then run
+   ```
+   $ ruby run.rb
+   ```
+
 
 ### Tests
 
