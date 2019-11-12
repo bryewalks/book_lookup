@@ -2,8 +2,6 @@ require 'http'
 require_relative 'book'
 
 class BookLookup
-  attr_accessor :reading_list, :found_books
-
   def initialize
     @reading_list = []
     @max_results = 5

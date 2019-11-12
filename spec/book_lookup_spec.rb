@@ -1,5 +1,9 @@
 require_relative 'spec_helper'
 
+class BookLookup
+  attr_accessor :reading_list, :found_books
+end
+
 describe BookLookup do
 
   let(:booklookup) { BookLookup.new } 
@@ -189,6 +193,7 @@ describe BookLookup do
   describe '#search_path' do
     before do
       allow(booklookup).to receive(:puts).and_return('')
+      booklookup.found_books = []
     end
 
     it 'should call search_books with 1 argument' do

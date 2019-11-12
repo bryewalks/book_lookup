@@ -33,17 +33,22 @@ This code has been run and tested on Ruby 2.5.3.
 
 ### Usage
 
-After running run.rb user will be given 3 selections
+After running run.rb user will be given 3 options.
 
-1.Search Books
-2.Reading List
-3.Exit
+   1. Search Books
 
-When user selects 1: User will be asked for a book title to search. After each search the user will be asked if they would like to add selections to their reading list and if they would like to search again.
+   2. Reading List
 
-When user selects 2: Users current reading list will be displayed on screen. More books can be added to reading list at any time.
+   3. Exit
 
-When user selects 3: Program will say good-bye and exit.
+To search select option one and enter a book title to search Google Books API. After each search you will be asked if you would like to add selections to your reading list.
+
+To add items to reading list after a succesful search answer 'y' to add selections and then enter the book number to add to your reading list.
+
+You can keep searching book titles and add as many to your reading list that you would like.
+
+To view your reading list select option two.
+
 
 ### Tests
 
