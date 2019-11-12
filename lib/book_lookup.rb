@@ -2,10 +2,9 @@ require 'http'
 require_relative 'book'
 
 class BookLookup
-  attr_accessor :reading_list, :found_books
-
   def initialize
     @reading_list = []
+    @max_results = 5
   end
 
   def run_program
@@ -45,7 +44,7 @@ class BookLookup
       puts "enter book title to search for books"
       title = user_input
       search_books(title)
-      if @found_books && add_to_saved?
+      if @found_books.any? && add_to_saved?
         select_book
       end
       searching = search_again?
@@ -56,7 +55,7 @@ class BookLookup
     selecting = true
     while selecting
       puts "Enter book # to add to reading list"
-      until (book_number = user_input.to_i).between?(1, 5)
+      until (book_number = user_input.to_i).between?(1, @max_results)
         puts "Please enter valid book number."
       end
       add_book(book_number)
@@ -101,11 +100,11 @@ class BookLookup
   def search_books(title)
     #format title to work with googles api regex to replace one or more spaces with underscore
     title = title.gsub(/ +/, '_')
-    response = HTTP.get("https://www.googleapis.com/books/v1/volumes?q=#{title}&maxResults=5")
+    response = HTTP.get("https://www.googleapis.com/books/v1/volumes?q=#{title}&maxResults=#{@max_results}")
     results = JSON.parse(response.body)
     searched_books = results["items"]
+    @found_books = []
     if searched_books
-      @found_books = []
       searched_books.each do |book|
         new_title = book["volumeInfo"]["title"]
         new_authors = book["volumeInfo"]["authors"]
