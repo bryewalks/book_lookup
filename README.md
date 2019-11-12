@@ -35,9 +35,15 @@ This code has been run and tested on Ruby 2.5.3.
 
 After running run.rb user will be given 3 selections
 
-1.
-2.
-3.
+1.Search Books
+2.Reading List
+3.Exit
+
+When user selects 1: User will be asked for a book title to search. After each search the user will be asked if they would like to add selections to their reading list and if they would like to search again.
+
+When user selects 2: Users current reading list will be displayed on screen. More books can be added to reading list at any time.
+
+When user selects 3: Program will say good-bye and exit.
 
 ### Tests
 
