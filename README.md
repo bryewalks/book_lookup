@@ -12,7 +12,7 @@ This is a Ruby command line application to interact with the Google Books API. S
 This code has been run and tested on Ruby 2.5.3.
 
 
-#### External Deps 
+#### External Dependencies
 
 * [http] (https://github.com/httprb/http) - a fast Ruby HTTP client with a chainable API, streaming support, and timeouts
 
@@ -31,6 +31,13 @@ This code has been run and tested on Ruby 2.5.3.
    $ ruby run.rb
    ```
 
+### Usage
+
+After running run.rb user will be given 3 selections
+
+1.
+2.
+3.
 
 ### Tests
 
