@@ -280,4 +280,41 @@ describe BookLookup do
       end
     end
   end
+
+  describe '#valid_title' do
+    context 'when no input given' do
+      it 'should ask for a valid book title' do
+        allow(booklookup).to receive(:user_input).and_return('', 'valid title')
+        expect { booklookup.valid_title }.to output("Please enter a valid book title.\n").to_stdout
+      end
+    end
+
+    context 'when spaces given' do
+      it 'should ask for a valid book title' do
+        allow(booklookup).to receive(:user_input).and_return('  ', 'valid title')
+        expect { booklookup.valid_title }.to output("Please enter a valid book title.\n").to_stdout
+      end
+    end
+
+    context 'when leading spaces given' do
+      it 'should return title with no leading spaces' do
+        allow(booklookup).to receive(:user_input).and_return('    Fight Club')
+        expect(booklookup.valid_title).to eq('Fight Club')
+      end
+    end
+
+    context 'when trailing spaces given' do
+      it 'should return title with no trailing spaces' do
+        allow(booklookup).to receive(:user_input).and_return('Fight Club    ')
+        expect(booklookup.valid_title).to eq('Fight Club')
+      end
+    end
+
+    context 'when valid input given' do
+      it 'should return title' do
+        allow(booklookup).to receive(:user_input).and_return('Fight Club')
+        expect(booklookup.valid_title).to eq('Fight Club')
+      end
+    end
+  end
 end
