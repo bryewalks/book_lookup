@@ -107,21 +107,29 @@ class BookLookup
   def search_books(title)
     #format title to work with googles api regex to replace one or more spaces with underscore
     title = title.gsub(/ +/, '_')
-    response = HTTP.get("https://www.googleapis.com/books/v1/volumes?q=#{title}&maxResults=#{@max_results}")
-    results = JSON.parse(response.body)
-    searched_books = results["items"]
     @found_books = []
-    if searched_books
-      searched_books.each do |book|
-        new_title = book["volumeInfo"]["title"]
-        new_authors = book["volumeInfo"]["authors"]
-        new_publisher = book["volumeInfo"]["publisher"]
-        @found_books << Book.new(title: new_title, authors: new_authors, publisher: new_publisher)
+    response = HTTP.timeout(10).get("https://www.googleapis.com/books/v1/volumes?q=#{title}&maxResults=#{@max_results}")
+    if response.code === 200
+      results = JSON.parse(response.body)
+      searched_books = results["items"]
+      if searched_books
+        searched_books.each do |book|
+          new_title = book["volumeInfo"]["title"]
+          new_authors = book["volumeInfo"]["authors"]
+          new_publisher = book["volumeInfo"]["publisher"]
+          @found_books << Book.new(title: new_title, authors: new_authors, publisher: new_publisher)
+        end
+        display_books(@found_books)
+      else
+        puts "No matches..."
       end
-      display_books(@found_books)
     else
-      puts "no matches..."
+      puts "Server responded with status code #{response.code}. Please try again."
     end
+  rescue HTTP::TimeoutError
+    puts "Search timed out after ten seconds."
+  rescue HTTP::Error
+    puts "There seems to be an issue searching."
   end
 
   def display_books(books)

@@ -18,7 +18,7 @@ describe BookLookup do
 
     context 'when google api finds no books' do
       it 'should inform you' do
-        expect { booklookup.search_books("asdfasdf asdf adasf") }.to output("no matches...\n").to_stdout
+        expect { booklookup.search_books("asdfasdf asdf adasf") }.to output("No matches...\n").to_stdout
       end
     end
   end
