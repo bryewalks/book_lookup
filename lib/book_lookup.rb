@@ -42,7 +42,7 @@ class BookLookup
     while searching
       system("clear")
       puts "enter book title to search for books"
-      title = user_input
+      title = valid_title
       search_books(title)
       if @found_books.any? && add_to_saved?
         select_book
@@ -61,6 +61,13 @@ class BookLookup
       add_book(book_number)
       selecting = add_another?
     end
+  end
+
+  def valid_title
+    while (title = user_input.strip).empty?
+      puts "Please enter a valid book title."
+    end
+    title 
   end
 
   def add_book(number)
