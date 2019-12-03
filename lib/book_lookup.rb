@@ -109,7 +109,7 @@ class BookLookup
     title = title.gsub(/ +/, '_')
     @found_books = []
     response = HTTP.timeout(10).get("https://www.googleapis.com/books/v1/volumes?q=#{title}&maxResults=#{@max_results}")
-    if response.code === 200
+    if response.status.success?
       results = JSON.parse(response.body)
       searched_books = results["items"]
       if searched_books
@@ -128,8 +128,6 @@ class BookLookup
     end
   rescue HTTP::TimeoutError
     puts "Search timed out after ten seconds."
-  rescue HTTP::Error
-    puts "There seems to be an issue searching."
   end
 
   def display_books(books)

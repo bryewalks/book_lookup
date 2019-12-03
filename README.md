@@ -52,12 +52,16 @@ To view your reading list select option two.
 
 ### Tests
 
-Testing was done using rspec.
+Testing was done using rspec and webmock. 
 
 * [RSpec] (https://github.com/rspec/rspec) - Behaviour Driven Development for Ruby
+* [WebMock] (https://github.com/bblimke/webmock) - Library for stubbing and setting expectations on HTTP requests in Ruby.
 
   ```
   $ gem install rspec
+  ```
+  ```
+  $ gem install webmock
   ```
 
   to run test

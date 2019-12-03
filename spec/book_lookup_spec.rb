@@ -6,11 +6,23 @@ end
 
 describe BookLookup do
 
-  let(:booklookup) { BookLookup.new } 
+  let(:booklookup) { BookLookup.new }
 
   describe '#search_books' do
+
+    let(:url) { "https://www.googleapis.com/books/v1/volumes?maxResults=5&q=fear_and_loathing" }
+
     context 'when google api finds books' do
+      
+      let(:response_book) { {"items" => [{"volumeInfo" => 
+        {
+          "title" => "title_1",
+          "authors" => ["author_1"],
+          "publisher" => "publisher_1"
+        }}]} }
+
       it 'should call display_books' do
+        stub_request(:get, url).to_return(status: 200, body: JSON.dump(response_book))
         expect(booklookup).to receive(:display_books)
         booklookup.search_books("fear and loathing")
       end
@@ -18,9 +30,24 @@ describe BookLookup do
 
     context 'when google api finds no books' do
       it 'should inform you' do
-        expect { booklookup.search_books("asdfasdf asdf adasf") }.to output("No matches...\n").to_stdout
+        stub_request(:get, url).to_return(status: 200, body: JSON.dump({}))
+        expect { booklookup.search_books("fear and loathing") }.to output("No matches...\n").to_stdout
       end
     end
+
+    context 'when google api times out' do
+      it 'should inform you of timeout' do
+        stub_request(:get, url).to_timeout
+        expect { booklookup.search_books("fear and loathing") }.to output("Search timed out after ten seconds.\n").to_stdout
+      end
+    end
+
+    context 'when google api responds with code other than 200' do
+      it 'should inform you of server response with correct code' do
+        stub_request(:get, url).to_return(status: 404)
+        expect { booklookup.search_books("fear and loathing") }.to output("Server responded with status code 404. Please try again.\n").to_stdout
+      end
+    end 
   end
 
   describe '#display_books' do
