@@ -55,7 +55,7 @@ class BookLookup
     selecting = true
     while selecting
       puts "Enter book # to add to reading list"
-      until (book_number = user_input.to_i).between?(1, @max_results)
+      until (book_number = user_input.to_i).between?(1, @found_books.length)
         puts "Please enter valid book number."
       end
       add_book(book_number)

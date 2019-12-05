@@ -233,6 +233,7 @@ describe BookLookup do
   describe '#select_book' do
     before do
       allow(booklookup).to receive(:puts).and_return('')
+      booklookup.found_books = ["book_1"]
     end
 
     it 'should call add_book with 1 argument' do
